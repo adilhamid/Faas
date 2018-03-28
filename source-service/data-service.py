@@ -8,7 +8,7 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 @app.route('/source/<task>', methods=['GET'])
 def get_data(task):
-    producer.send('my-topic', task.encode())
+    producer.send('function1', task.encode())
     return jsonify(task)
 
 

@@ -1,5 +1,8 @@
-from database import Database
-from resourceManager import ResourceManager
+import sys
+
+sys.path.append("..")
+from database.database import Database
+from resourceManager.resourceManager import ResourceManager
 
 class Trigger:
 	def __init__(self):
