@@ -1,9 +1,14 @@
-from elasticsearch import Elasticsearch
+import sys
+sys.path.append("..")
+
+from util.mongo_connect import connectMongo
 
 class Database:
 	def __init__(self):
-		self.es = Elasticsearch()
-		self.es.indices.create(index='lambda-mappings', ignore=400)
+		self.collection = connectMongo()
 
-	def findBySourceLambdaId(self, id):
-		self.get(index="lambda-mappings", doc_type="mappings", id=42)['_source']
+	def insertFunctionEntry(self, functionName, topicName, f):
+		f.save("/tmp/" + functionName)
+
+		self.collection.update({'functionName': functionName, 'topicName': topicName},
+                          {'$set':{'path': "/tmp/" + functionName}}, True)

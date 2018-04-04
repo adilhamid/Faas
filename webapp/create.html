@@ -37,23 +37,23 @@
                </a>
                <h3>Run code without thinking about servers</h3>
             </header>
-            <form>
+            <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
               <div class="form-group">
                 <label for="FunctionName">Function Name</label>
-                <input type="text" class="form-control" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">
+                <input type="text" class="form-control" name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">
                 <small id="functionHelp" class="form-text text-muted">Please give the unique function name which does not exist</small>
               </div>
               <div class="form-group">
                 <label for="kafkaTopic">Kafka Topic Name</label>
-                <input type="text" class="form-control" id="kafkaTopic" aria-describedby="kafkaTopicHelp" placeholder="Enter Kakfka Topic name">
+                <input type="text" class="form-control" name="kafkaTopic" id="kafkaTopic" aria-describedby="kafkaTopicHelp" placeholder="Enter Kakfka Topic name">
                 <small id="kafkaTopicHelp" class="form-text text-muted">Right Now, we only support Kafka as the source for the function.</small>
               </div>
               <div class="form-group">
                 <label for="inputFunctionFile">File input</label>
-                <input type="file" class="form-control-file" id="inputFunctionFile" aria-describedby="fileHelp">
+                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp">
                 <small id="fileHelp" class="form-text text-muted">Upload the Python Code File here. As of now, we only support Python.</small>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <input type="submit" class="btn btn-primary"/>
             </form>
             <br/>
             <center>
