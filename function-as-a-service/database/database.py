@@ -12,3 +12,7 @@ class Database:
 
 		self.collection.update({'functionName': functionName, 'topicName': topicName},
                           {'$set':{'path': "/tmp/" + functionName}}, True)
+
+	def getDetailsByTopicName(self, topic):
+		result = self.collection.find_one({'topicName': topic})
+		return result

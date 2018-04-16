@@ -10,8 +10,12 @@ class Trigger:
 		self.database = Database()
 
 	def handleRequest(self, payload):
-		source_lambda_id = payload["source_lambda_id"]
+		topic = payload.topic
+		message = payload.value
 
-		eventDetails = self.database.findBySourceLambdaId(source_lambda_id)
+		eventDetails = self.database.getDetailsByTopicName(topic)
+
+		print(eventDetails['functionName'])
+		print(eventDetails['path'])
 
 		
