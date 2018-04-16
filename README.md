@@ -24,6 +24,16 @@ Kafka Topic creation can be done as follows:
 kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic <topic-name>
 ```
 
+List the Available Kafka Topics:
+```
+kafka-topics --list --zookeeper localhost:2181
+```
+
+Read the particular kafka topic:
+```
+kafka-console-consumer --zookeeper localhost:2181 --topic <topic-name> --from-beginning
+```
+
 ## Setting up MongoDB locally
 
 Install mongodb according to the operating system you are using. Eg. for MAC, just do
@@ -52,3 +62,21 @@ To create the empty database in mongodb, do
 ```
 use faas
 ```
+
+## Starting the source Service and Push the data to Kafka function
+
+It is a flask application, so it can be started by following command inside the source-service/ folder:
+```
+python data-service.py
+```
+
+Now go to http://127.0.0.1:5000/ and you will see a textbox and submit button.
+Just enter the data here and you will see it in Kakfa topic
+
+## Starting the webservice for Function as a Service to manage functions
+It is a flask application, so it can be started by following command inside the function-as-a-service/webservice/ folder:
+```
+python application.py
+```
+Go to index.html by doubling clicking on it. 
+

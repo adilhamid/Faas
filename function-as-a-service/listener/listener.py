@@ -26,7 +26,7 @@ class Listener():
             for message in self.listenerObj:
                 print(message)
                 # As soon as the request is listened from the Kafka Queue, Invoke the trigger
-                self.triggerObj.handleRequest(self,message.value)
+                self.triggerObj.handleRequest(message)
 
                 if self.stopFlag == True:
                     break
