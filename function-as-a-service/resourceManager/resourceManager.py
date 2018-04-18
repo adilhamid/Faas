@@ -1,12 +1,56 @@
 import subprocess
+import sys
+sys.path.append("..")
+from util.config import Config
 
 class ResourceManager:
     def __init__(self):
-        pass
+        self.configObj = Config()
 
     def executeLambda(self, path, functionName):
-        copy = subprocess.check_output(
-            "scp -o LogLevel=quiet -o StrictHostKeyChecking=no /tmp/function1.py " + "ec2-user@ec2-52-23-174-4.compute-1.amazonaws.com" + ":~", shell=True)
-        perm = subprocess.check_output("ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + "ec2-user@ec2-52-23-174-4.compute-1.amazonaws.com" + " 'chmod 711 ~/function1.py'", shell=True)
-        run = subprocess.check_output("ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + "ec2-user@ec2-52-23-174-4.compute-1.amazonaws.com" + " '" + "DISPLAY=:0 python function1.py >function1.log" + "'", shell=True)
-        "deployed and executed"
+
+        # Since we have one instance only, running the command on the single instance
+        functionPath = path + functionName + ".py"
+        instancePath  = "/home/ec2-user/functionDir/"  #Cross check this once again
+
+        copyCommand = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + functionPath + " " + self.configObj.INSTANCE + ":" + instancePath
+
+        permissionCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + " 'chmod 711 " + instancePath+functionName + ".py'"
+
+        runCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + " 'DISPLAY=:0 python "+ instancePath + functionName + ".py > "+ instancePath + functionName + ".log'"
+
+        copyLogBack = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + ":" + instancePath+ functionName + ".log " + path + functionName + ".log"
+
+        try:
+            print copyCommand
+            copy = subprocess.check_output(copyCommand, shell=True)
+
+            print permissionCommand
+            perm = subprocess.check_output(permissionCommand, shell=True)
+
+            print runCommand
+            run = subprocess.check_output(runCommand, shell=True)
+
+            print copyLogBack
+            copyBack = subprocess.check_output(copyLogBack, shell = True)
+
+            resultData = open(path+functionName+".log", 'r').read()
+
+            print "\nThe result obtained by running function is : "+ resultData
+
+            print "Deployed an Executed Successfully"
+
+            return resultData
+
+        except:
+            e = sys.exc_info()[0]
+            print "Exception occured ",
+            print e
+
+
+if __name__ == "__main__":
+    # Self run the code here
+    # For now using the values are overridden
+    path = "/Users/adilhamidmalla/Projects/"
+    functionName = "function2"
+    ResourceManager().executeLambda(path, functionName)

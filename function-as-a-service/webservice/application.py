@@ -17,13 +17,21 @@ def test():
 @app.route('/create', methods = ['GET', 'POST'])
 def create_function():
     if request.method == 'POST':
-        f = request.files['file']
+        file = request.files['file']
         functionName = request.form['functionName']
         topicName = request.form['kafkaTopic']
 
-    database.insertFunctionEntry(functionName, topicName, f)
+    database.insertFunctionEntry(functionName, topicName, file)
 
     return "File Uploaded Successful"
+
+@app.route('/edit', methods = ['GET', 'POST'])
+def edit_function():
+    if request.method == 'GET':
+        print "Nothing"
+
+    return "File Uploaded Successful"
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3034))

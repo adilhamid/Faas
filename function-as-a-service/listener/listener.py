@@ -2,7 +2,7 @@ from kafka import KafkaConsumer
 import sys
 sys.path.append("..")
 
-from config import CONFIG
+from util.config import Config
 from trigger.trigger import Trigger
 from database.database import Database
 
@@ -10,8 +10,9 @@ class Listener():
     def __init__(self):
         self.stopFlag = False
         self.database = Database()
+        self.configObj = Config()
         self.triggerObj = Trigger()
-        self.listenerObj = KafkaConsumer(bootstrap_servers=CONFIG.KAFKA_QUEUE_HOSTNAME_PORT,
+        self.listenerObj = KafkaConsumer(bootstrap_servers=self.configObj.KAFKA_QUEUE_HOSTNAME_PORT,
                                  auto_offset_reset='earliest',
                                  consumer_timeout_ms=1000)
 
