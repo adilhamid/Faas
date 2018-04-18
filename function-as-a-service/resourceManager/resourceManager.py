@@ -9,10 +9,6 @@ class ResourceManager:
 
     def executeLambda(self, path, functionName):
 
-        # For now using the values are overridden
-        path = "/Users/adilhamidmalla/Projects/689-18-a-P2/"
-        functionName = "function2"
-
         # Since we have one instance only, running the command on the single instance
         functionPath = path + functionName + ".py"
         instancePath  = "/home/ec2-user/functionDir/"  #Cross check this once again
@@ -40,7 +36,7 @@ class ResourceManager:
 
             resultData = open(path+functionName+".log", 'r').read()
 
-            print resultData
+            print "\nThe result obtained by running function is : "+ resultData
 
             print "Deployed an Executed Successfully"
 
@@ -54,4 +50,7 @@ class ResourceManager:
 
 
 # Self run the code here
-ResourceManager().executeLambda("path", "filename")
+# For now using the values are overridden
+path = "/Users/adilhamidmalla/Projects/"
+functionName = "function2"
+ResourceManager().executeLambda(path, functionName)
