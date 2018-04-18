@@ -34,6 +34,11 @@ Read the particular kafka topic:
 kafka-console-consumer --zookeeper localhost:2181 --topic <topic-name> --from-beginning
 ```
 
+Delete the particular kafka topic:
+```
+kafka-topics --delete --zookeeper localhost:2181 --topic <topic-name>
+```
+
 ## Setting up MongoDB locally
 
 Install mongodb according to the operating system you are using. Eg. for MAC, just do

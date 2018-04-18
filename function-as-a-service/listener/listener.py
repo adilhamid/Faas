@@ -4,10 +4,12 @@ sys.path.append("..")
 
 from config import CONFIG
 from trigger.trigger import Trigger
+from database.database import Database
 
 class Listener():
     def __init__(self):
         self.stopFlag = False
+        self.database = Database()
         self.triggerObj = Trigger()
         self.listenerObj = KafkaConsumer(bootstrap_servers=CONFIG.KAFKA_QUEUE_HOSTNAME_PORT,
                                  auto_offset_reset='earliest',
@@ -19,8 +21,8 @@ class Listener():
 
 
     # Run the service to listen to the kafka queue on particular topic
-    def startListening(self, topicName):
-        self.listenerObj.subscribe([topicName])
+    def startListening(self, topics):
+        self.listenerObj.subscribe(topics)
 
         while not self.stopFlag:
             for message in self.listenerObj:
@@ -33,6 +35,7 @@ class Listener():
 
         self.listenerObj.close()
 
-# Example Usage
 if __name__ == "__main__":
-    Listener().startListening('function1')
+    listener = Listener()
+    topics = listener.database.getAllKafkaTopics()
+    listener.startListening(topics)

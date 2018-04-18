@@ -8,11 +8,15 @@ class Database:
 		self.collection = connectMongo()
 
 	def insertFunctionEntry(self, functionName, topicName, f):
-		f.save("/tmp/" + functionName)
+		f.save("/tmp/" + functionName + '.py')
 
 		self.collection.update({'functionName': functionName, 'topicName': topicName},
-                          {'$set':{'path': "/tmp/" + functionName}}, True)
+                          {'$set':{'path': "/tmp/" + functionName + '.py'}}, True)
 
 	def getDetailsByTopicName(self, topic):
-		result = self.collection.find_one({'topicName': topic})
+		result = self.collection.find({'topicName': topic})
+		return result
+
+	def getAllKafkaTopics(self):
+		result = self.collection.distinct("topicName")
 		return result
