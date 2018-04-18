@@ -25,6 +25,12 @@ def create_function():
 
     return "File Uploaded Successful"
 
+
+@app.route('/getFunctionNames', methods = ['GET', 'POST'])
+def getFunctionNames():
+    if request.method == 'GET':
+        database.
+
 @app.route('/edit', methods = ['GET', 'POST'])
 def edit_function():
     if request.method == 'GET':

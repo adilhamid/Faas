@@ -20,3 +20,11 @@ class Database:
 	def getAllKafkaTopics(self):
 		result = self.collection.distinct("topicName")
 		return result
+
+	def getAllFunctionNames(self):
+		result = self.collection.distinct("functionName")
+		return result
+
+	def getFunctionPath(self, functionName):
+		result = self.collection.find({'functionName':functionName})
+		return result['path']
