@@ -20,12 +20,6 @@ def create_function():
         file = request.files['file']
         functionName = request.form['functionName']
         topicName = request.form['kafkaTopic']
-        path = "/tmp/"
-
-        print file
-        print functionName
-        print topicName
-        print path
 
     database.insertFunctionEntry(functionName, topicName, file)
 

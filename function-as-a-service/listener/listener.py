@@ -37,7 +37,6 @@ class Listener():
         self.listenerObj.close()
 
 if __name__ == "__main__":
-    print "I am here now"
     listener = Listener()
     topics = listener.database.getAllKafkaTopics()
     listener.startListening(topics)
