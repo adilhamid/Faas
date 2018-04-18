@@ -13,9 +13,7 @@ class Trigger:
 		topic = payload.topic
 		message = payload.value
 
-		eventDetails = self.database.getDetailsByTopicName(topic)
+		functionDetails = self.database.getDetailsByTopicName(topic)
 
-		print(eventDetails['functionName'])
-		print(eventDetails['path'])
-
-		
+		for detail in functionDetails:
+			self.resourceManager.executeLambda(detail['path'], detail['functionName'])
