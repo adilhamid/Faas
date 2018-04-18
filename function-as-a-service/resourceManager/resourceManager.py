@@ -48,9 +48,9 @@ class ResourceManager:
             print e
 
 
-
-# Self run the code here
-# For now using the values are overridden
-path = "/Users/adilhamidmalla/Projects/"
-functionName = "function2"
-ResourceManager().executeLambda(path, functionName)
+if __name__ == "__main__":
+    # Self run the code here
+    # For now using the values are overridden
+    path = "/Users/adilhamidmalla/Projects/"
+    functionName = "function2"
+    ResourceManager().executeLambda(path, functionName)

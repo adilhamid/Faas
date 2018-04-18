@@ -11,7 +11,7 @@ class Database:
 		f.save("/tmp/" + functionName + '.py')
 
 		self.collection.update({'functionName': functionName, 'topicName': topicName},
-                          {'$set':{'path': "/tmp/" + functionName + '.py'}}, True)
+                          {'$set':{'path': "/tmp/"}}, True)
 
 	def getDetailsByTopicName(self, topic):
 		result = self.collection.find({'topicName': topic})

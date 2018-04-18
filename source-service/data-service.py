@@ -1,8 +1,8 @@
 from flask import Flask, redirect, url_for, request, render_template
 from kafka import KafkaProducer
+import sys
 
 app = Flask(__name__)
-
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 
