@@ -25,6 +25,7 @@
       <noscript>
          <link rel="stylesheet" href="css/style.css" />
       </noscript>
+       <script src="js/editFile.js"></script>
    </head>
    <body class="homepage">
       <!-- Header -->
@@ -37,7 +38,7 @@
                </a>
                <h3>Run code without thinking about servers</h3>
             </header>
-            <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
+            <form method="post" onsubmit ="return checkFile()"enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
               <div class="form-group">
                 <label for="FunctionName">Function Name</label>
                 <input type="text" class="form-control" name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">

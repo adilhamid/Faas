@@ -34,3 +34,15 @@ function onFunctionNameLoad()
     var url = "http://127.0.0.1:3034/getFunctionName"
     options = httpGet(url)
 }
+
+function checkFile()
+{
+    if(document.getElementById("inputFunctionFile").value != "") {
+       alert("Selected the file");
+       return true
+    }
+    else{
+        alert("Please select a file first");
+        return false
+    }
+}
