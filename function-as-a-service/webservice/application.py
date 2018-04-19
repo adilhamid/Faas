@@ -28,10 +28,10 @@ def create_function():
     return "File Uploaded Successful"
 
 
-@app.route('/getFunctionName', methods = ['GET', 'POST'])
+@app.route('/getFunctionName', methods = ['GET'])
 @cross_origin(supports_credentials=True)
 def getFunctionNames():
-    if request.method == 'POST':
+    if request.method == 'GET':
         functionNames = database.getAllFunctionNames()
 
     return jsonify(array=functionNames)

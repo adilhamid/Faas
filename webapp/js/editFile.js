@@ -2,7 +2,7 @@
 function httpGet(theUrl)
 {
      var request = $.ajax({
-        type: "POST",
+        type: "GET",
         url: theUrl,
         xhrFields: {
             withCredentials: true
