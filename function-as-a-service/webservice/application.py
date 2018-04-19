@@ -1,4 +1,5 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
+from flask_cors import cross_origin, CORS
 import os
 import sys
 sys.path.append("..")
@@ -6,6 +7,7 @@ sys.path.append("..")
 from database.database import Database
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 database = Database()
 
@@ -25,12 +27,25 @@ def create_function():
 
     return "File Uploaded Successful"
 
-@app.route('/edit', methods = ['GET', 'POST'])
-def edit_function():
-    if request.method == 'GET':
-        print "Nothing"
+@app.route('/update', methods = ['GET', 'POST'])
+def update_function():
+    if request.method == 'POST':
+        file = request.files['file']
+        functionName = request.form['functionName']
 
-    return "File Uploaded Successful"
+    database.updateEntry(functionName, file)
+
+    return "File Re-Uploaded Successfully"
+
+
+@app.route('/getFunctionName', methods = ['GET'])
+@cross_origin(supports_credentials=True)
+def getFunctionNames():
+    if request.method == 'GET':
+        functionNames = database.getAllFunctionNames()
+
+    return jsonify(array=functionNames)
+
 
 
 if __name__ == '__main__':
