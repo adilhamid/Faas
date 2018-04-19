@@ -27,6 +27,16 @@ def create_function():
 
     return "File Uploaded Successful"
 
+@app.route('/update', methods = ['GET', 'POST'])
+def update_function():
+    if request.method == 'POST':
+        file = request.files['file']
+        functionName = request.form['functionName']
+
+    database.updateEntry(functionName, file)
+
+    return "File Re-Uploaded Successfully"
+
 
 @app.route('/getFunctionName', methods = ['GET'])
 @cross_origin(supports_credentials=True)
@@ -35,6 +45,8 @@ def getFunctionNames():
         functionNames = database.getAllFunctionNames()
 
     return jsonify(array=functionNames)
+
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3034))

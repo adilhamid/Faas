@@ -39,24 +39,16 @@
                </a>
                <h3>Edit code without thinking about the editor</h3>
             </header>
-            <form method="get" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
+            <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/update">
               <div class="form-group">
-                  <label for="FunctionName">Select the Function Name, you want to edit:</label> <br/>
+                  <label for="FunctionName">Select the Function Name, you want to update:</label> <br/>
                   <select name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">
                   </select>
-                  <br/>
-                  <br/>
-                  <input type="Submit" text="Get the File to Edit" class="btn btn-primary"/>
+                  <div class="form-group">
+                <label for="inputFunctionFile">File input</label>
+                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Upload the new Python Code File here. As of now, we only support Python.</small>
               </div>
-
-            </form>
-            <br/>
-             <form form method="get" enctype="multipart/form-data" action = "http://127.0.0.1:3034/getFunctionNames">
-                 <div class="form-group">
-                    <label for="pythonEditor">Edit your python code here:</label>
-                    <textarea rows = 25 type="text" class="form-control" name="pythonEditor" id="pythonEditor" aria-describedby="kafkaTopicHelp" placeholder="Select the function name you want to edit:">
-                    </textarea>
-                 </div>
                   <input type="Submit" text="Submit the edit" class="btn btn-primary"/>
 
              </form>
