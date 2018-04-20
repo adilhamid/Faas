@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-</head>
-<body>
-    <meta charset="UTF-8">
-    <form method="POST">
-        <p><input type="text" name="task"/></p>
-        <p><input value="submit" type="submit" /></p>
-    </form>
-</body>
-</html>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+<title>
+    Data Service
+</title>
+<div class="container">
+  <form id="contact" action="" method="post">
+    <h3>Enter the Data</h3>
+      <fieldset>
+          Choose Topic
+            <select>
+            {% for topic in topics %}
+              <option style="width:100%">{{topic}}</option>
+            {% endfor %}
+          </select>
+    </fieldset>
+    <fieldset>
+        Enter Data
+      <input placeholder="Data" type="text" tabindex="1" required autofocus>
+    </fieldset>
+    <fieldset>
+      <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+    </fieldset>
+  </form>
+</div>
