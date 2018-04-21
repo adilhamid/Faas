@@ -12,7 +12,7 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092')
 def connect_mongo():
     host = "127.0.0.1:27017"
     db = "faas"
-    collection = "functions"
+    collection = "function_topic_mapping"
     url = "mongodb://" + host + "/" + db
     client = pymongo.MongoClient(url)
     db = client[db]
