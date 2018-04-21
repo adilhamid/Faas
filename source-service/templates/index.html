@@ -7,15 +7,15 @@
     <h3>Enter the Data</h3>
       <fieldset>
           Choose Topic
-            <select>
+            <select name="topic">
             {% for topic in topics %}
-              <option style="width:100%">{{topic}}</option>
+              <option>{{ topic }}</option>
             {% endfor %}
           </select>
     </fieldset>
     <fieldset>
-        Enter Data
-      <input placeholder="Data" type="text" tabindex="1" required autofocus>
+        Enter Data:
+      <input name="task" placeholder="Data" type="text" tabindex="1" required autofocus>
     </fieldset>
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
