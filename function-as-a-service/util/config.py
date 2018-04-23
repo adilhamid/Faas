@@ -6,6 +6,6 @@ class Config:
         self.TOPIC_FLAGS = []
 
         #
-        self.INSTANCE = "ec2-user@ec2-54-89-46-245.compute-1.amazonaws.com"
+        self.INSTANCE = "ec2-user@ec2-34-205-18-19.compute-1.amazonaws.com"
 
     

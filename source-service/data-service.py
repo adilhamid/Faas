@@ -35,7 +35,7 @@ def get_data():
             "topic": topic
         }
         message = json.dumps(data)
-        producer.send('function1', message.encode('utf-8'))
+        producer.send(topic, message.encode('utf-8'))
         return redirect(url_for('success'))
     collection = connect_mongo()
     topics = collection.distinct('topicName')
