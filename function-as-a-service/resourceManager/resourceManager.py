@@ -7,11 +7,25 @@ class ResourceManager:
     def __init__(self):
         self.configObj = Config()
 
+    def create_directory(self, host, path):
+        creatDir = "ssh " + host +" 'mkdir -p " + path+"'"
+        try:
+            print creatDir
+            copy = subprocess.check_output(creatDir, shell=True)
+        except:
+            e = sys.exc_info()[0]
+            print "Exception occured ",
+            print e
+
+
     def executeLambda(self, path, functionName):
 
         # Since we have one instance only, running the command on the single instance
         functionPath = path + functionName + ".py"
         instancePath  = "/home/ec2-user/functionDir/"  #Cross check this once again
+
+        # Check if the file path exists in the instance machine
+        self.exists_remote_create(self.configObj.INSTANCE, instancePath )
 
         copyCommand = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + functionPath + " " + self.configObj.INSTANCE + ":" + instancePath
 
@@ -49,8 +63,5 @@ class ResourceManager:
 
 
 if __name__ == "__main__":
-    # Self run the code here
-    # For now using the values are overridden
-    path = "/Users/adilhamidmalla/Projects/"
-    functionName = "function2"
-    ResourceManager().executeLambda(path, functionName)
+    obj = ResourceManager()
+    obj.create_directory(obj.configObj.INSTANCE ,"/home/ec2-user/functionDir/")
