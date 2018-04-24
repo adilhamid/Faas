@@ -1,9 +1,10 @@
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+<script src="{{url_for('static', filename='js/index.js')}}"></script>
 <title>
     Data Service
 </title>
 <div class="container">
-  <form id="contact" action="" method="post">
+  <form id="contact" onsubmit="print_success()" action="" method="post">
     <h3>Enter the Data</h3>
       <fieldset>
           Choose Topic
