@@ -41,3 +41,8 @@ class Database:
 	def getAllFunctionOutputs(self):
 		result = self.outputCollection.find()
 		return result
+
+	def insertFunctionOutput(self, functionName, userData, output, timestamp):
+		self.outputCollection.insert({'timestamp' : timestamp,'functionName': functionName, 'userData': userData,
+							   	'outputResult': output})
+

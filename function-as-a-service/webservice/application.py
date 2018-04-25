@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, redirect
 from flask_cors import cross_origin, CORS
 import os
 import sys
+import json
 import subprocess
 sys.path.append("..")
 
@@ -67,11 +68,15 @@ def getTopicNames():
 @app.route('/getFunctionOutput', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def getFunctionOutputs():
+    result =[]
     if request.method == 'GET':
         functionOutput = database.getAllFunctionOutputs()
 
+        for item in functionOutput:
+            result.append({"timestamp": item["timestamp"], "functionName": item["functionName"],
+                           "userData": item["userData"], "outputResult": item["outputResult"]})
 
-    return jsonify(results = functionOutput)
+    return jsonify(results = result)
 
 
 @app.route('/createKafkaTopic', methods = ['GET', 'POST'])

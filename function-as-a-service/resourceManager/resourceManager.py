@@ -1,11 +1,14 @@
 import subprocess
 import sys
+import datetime
 sys.path.append("..")
 from util.config import Config
+from database.database import Database
 
 class ResourceManager:
     def __init__(self):
         self.configObj = Config()
+        self.database = Database()
 
     def create_directory(self, host, path):
         creatDir = "ssh " + host +" 'mkdir -p " + path+"'"
@@ -18,7 +21,7 @@ class ResourceManager:
             print e
 
 
-    def executeLambda(self, path, functionName):
+    def executeLambda(self, path, functionName, userData):
 
         # Since we have one instance only, running the command on the single instance
         functionPath = path + functionName + ".py"
@@ -51,7 +54,9 @@ class ResourceManager:
             resultData = open(path+functionName+".log", 'r').read()
 
             # Function Call to create the instance of the output log
+            timestamp = datetime.datetime.now()
 
+            self.database.insertFunctionOutput(functionName, userData, resultData, timestamp)
 
             print "\nThe result obtained by running function is : "+ resultData
 
