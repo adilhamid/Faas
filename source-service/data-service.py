@@ -13,11 +13,14 @@ def connect_mongo():
     host = "127.0.0.1:27017"
     db = "faas"
     collection = "function_topic_mapping"
+    kafka_collection = "kafka_topics_available"
+
     url = "mongodb://" + host + "/" + db
     client = pymongo.MongoClient(url)
     db = client[db]
     collection = db[collection]
-    return collection
+    kafka_collection = db[kafka_collection]
+    return collection, kafka_collection
 
 
 @app.route('/success')
@@ -27,8 +30,8 @@ def success():
 
 @app.route('/', methods=['POST', 'GET'])
 def get_data():
-    collection = connect_mongo()
-    topics = collection.distinct('topicName')
+    collection, kafka_collection = connect_mongo()
+    topics = kafka_collection.distinct('kafkaTopic')
     if request.method == 'POST':
         task = request.form["task"]
         topic = request.form["topic"]
