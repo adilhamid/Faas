@@ -24,6 +24,12 @@ def create_function():
         functionName = request.form['functionName']
         topicName = request.form['kafkaTopic']
 
+        # Checking if the function-name already exists
+        functionNamesList = database.getAllFunctionNames()
+
+        if functionName in functionNamesList:
+            return "Function name already exists!!!"
+
     database.insertFunctionEntry(functionName, topicName, file)
 
     return "File Uploaded Successful"
@@ -61,6 +67,12 @@ def createKafkaTopic():
     if request.method == 'POST':
         topicName = request.form['kafkaTopicName']
 
+    topicNamesList = database.getAllKafkaTopics()
+
+    if topicName in topicNamesList:
+        return "Kafka Topic already exists, please select from drop down items."
+
+    # If Kafka topic doesn't exist
     try:
         subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
     except:
