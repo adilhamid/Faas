@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_cors import cross_origin, CORS
 import os
 import sys
@@ -11,6 +11,8 @@ app = Flask(__name__)
 CORS(app, support_credentials=True)
 
 database = Database()
+
+WEBAPP_HOSTNAME = "http://localhost:63342/689-18-a-P2/webapp/"
 
 @app.route('/test')
 def test():
@@ -64,13 +66,12 @@ def getTopicNames():
 @app.route('/createKafkaTopic', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def createKafkaTopic():
-    if request.method == 'POST':
-        topicName = request.form['kafkaTopicName']
+    topicName = request.form['kafkaTopicName']
 
     topicNamesList = database.getAllKafkaTopics()
 
     if topicName in topicNamesList:
-        return "Kafka Topic already exists, please select from drop down items."
+        return redirect(WEBAPP_HOSTNAME + '/create.html?status=2')
 
     # If Kafka topic doesn't exist
     try:
@@ -78,11 +79,11 @@ def createKafkaTopic():
     except:
         e = sys.exc_info()[0]
         print "Exception occured ", e
-        return "Kafka topic creation failed"
+        redirect(WEBAPP_HOSTNAME + '/create.html?status=0')
 
     database.addKafkaTopic(topicName)
 
-    return 'Kafka Topic created successfully'
+    return redirect(WEBAPP_HOSTNAME + '/create.html?status=1')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3034))

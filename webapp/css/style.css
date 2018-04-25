@@ -101,3 +101,7 @@
      .form-group {
      	text-align: left;
      }
+
+    .alert {
+       width:40%;
+    }
