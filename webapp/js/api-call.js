@@ -40,14 +40,3 @@ function onTopicsLoad()
     var url = "http://127.0.0.1:3034/getTopicNames"
     options = httpGet(url, 'kafkaTopic')
 }
-
-function checkFile()
-{
-    if(document.getElementById("inputFunctionFile").value != "") {
-       return true
-    }
-    else{
-        alert("Please select a file first");
-        return false
-    }
-}

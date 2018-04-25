@@ -38,15 +38,15 @@
                </a>
                <h3>Edit code without thinking about the editor</h3>
             </header>
-            <form id = "updateForm" onsubmit="return checkFile()" method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/update">
+            <form id = "updateForm" method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/update">
               <div class="form-group">
                   <label for="FunctionName">Select the Function Name, you want to update:</label> <br/>
-                  <select name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">
+                  <select name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name" required>
                   </select>
               </div>
               <div class="form-group">
                 <label for="inputFunctionFile">File input</label>
-                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp">
+                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp" required>
                 <small id="fileHelp" class="form-text text-muted">Upload the new Python Code File here. As of now, we only support Python.</small>
               </div>
                   <input type="Submit" text="Submit the edit" class="btn btn-primary"/>
