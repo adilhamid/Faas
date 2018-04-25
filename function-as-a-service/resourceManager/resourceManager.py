@@ -50,6 +50,9 @@ class ResourceManager:
 
             resultData = open(path+functionName+".log", 'r').read()
 
+            # Function Call to create the instance of the output log
+
+
             print "\nThe result obtained by running function is : "+ resultData
 
             print "Deployed an Executed Successfully"

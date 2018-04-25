@@ -61,6 +61,17 @@ def getTopicNames():
 
     return jsonify(array=topicNames)
 
+
+@app.route('/getFunctionOutput', methods = ['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+def getFunctionOutputs():
+    if request.method == 'GET':
+        functionOutput = database.getAllFunctionOutputs()
+
+
+    return jsonify(results = functionOutput)
+
+
 @app.route('/createKafkaTopic', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def createKafkaTopic():
