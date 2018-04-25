@@ -12,7 +12,6 @@
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
       <script src="js/skel.min.js"></script>
-      <script src="js/skel-panels.min.js"></script>
       <script src="js/init.js"></script>
       <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -38,21 +37,21 @@
                </a>
                <h3>Run code without thinking about servers</h3>
             </header>
-            <form method="post" onsubmit ="return checkFile()"enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
+            <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
               <div class="form-group">
                 <label for="FunctionName">Function Name</label>
-                <input type="text" class="form-control" name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name">
+                <input type="text" class="form-control" name="functionName" id="functionName" aria-describedby="functionHelp" placeholder="Enter function name" required>
                 <small id="functionHelp" class="form-text text-muted">Please give the unique function name which does not exist</small>
               </div>
               <div class="form-group">
                 <label for="kafkaTopic">Select the Kafka Topic</label>
-                  <select name="kafkaTopic" id="kafkaTopic" placeholder="Select the Kafka Topic">
+                  <select name="kafkaTopic" id="kafkaTopic" placeholder="Select the Kafka Topic" required>
                   </select>
-                 <button class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Create new Kafka topic</button>
+                 <button type="button" class="btn btn-link" data-toggle='modal' data-target='#myModal'>Create new Kafka topic</button>
               </div>
               <div class="form-group">
                 <label for="inputFunctionFile">File input</label>
-                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp">
+                <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp" required>
                 <small id="fileHelp" class="form-text text-muted">Upload the Python Code File here. As of now, we only support Python.</small>
               </div>
               <input type="submit" class="btn btn-primary"/>
@@ -68,7 +67,7 @@
                     <form action='http://localhost:3034/createKafkaTopic' method="POST">
                       <div class="form-group">
                         <label >Enter the Kafka Topic Name</label>
-                        <input name='kafkaTopicName' type="text" class="form-control" id="kafkaTopicName" aria-describedby="kafkaHelp" placeholder="Enter Kafka Topic Name">
+                        <input name='kafkaTopicName' type="text" class="form-control" id="kafkaTopicName" aria-describedby="kafkaHelp" placeholder="Enter Kafka Topic Name" required>
                         <small id="kafkaHelp" class="form-text text-muted">Make sure to enter the new Kafka Topic Name which is not in dropdown</small>
                       </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
