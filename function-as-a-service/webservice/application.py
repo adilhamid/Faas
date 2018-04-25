@@ -24,6 +24,12 @@ def create_function():
         functionName = request.form['functionName']
         topicName = request.form['kafkaTopic']
 
+        # Checking if the function-name already exists
+        functionNamesList = database.getAllFunctionNames()
+
+        if functionName in functionNamesList:
+            return "Function name already exists!!!"
+
     database.insertFunctionEntry(functionName, topicName, file)
 
     return "File Uploaded Successful"

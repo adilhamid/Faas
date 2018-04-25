@@ -44,7 +44,6 @@ function onTopicsLoad()
 function checkFile()
 {
     if(document.getElementById("inputFunctionFile").value != "") {
-       alert("Selected the file");
        return true
     }
     else{
