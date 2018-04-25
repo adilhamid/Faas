@@ -61,7 +61,12 @@ def createKafkaTopic():
     if request.method == 'POST':
         topicName = request.form['kafkaTopicName']
 
-    subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
+    try:
+        subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
+    except:
+        e = sys.exc_info()[0]
+        print "Exception occured ", e
+        return "Kafka topic creation failed"
 
     database.addKafkaTopic(topicName)
 
