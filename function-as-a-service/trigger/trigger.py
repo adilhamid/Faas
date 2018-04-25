@@ -16,4 +16,4 @@ class Trigger:
 		functionDetails = self.database.getDetailsByTopicName(topic)
 
 		for detail in functionDetails:
-			self.resourceManager.executeLambda(detail['path'], detail['functionName'])
+			self.resourceManager.executeLambda(detail['path'], detail['functionName'], message)
