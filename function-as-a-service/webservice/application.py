@@ -76,7 +76,7 @@ def getFunctionOutputs():
             result.append({"timestamp": item["timestamp"], "functionName": item["functionName"],
                            "userData": item["userData"], "outputResult": item["outputResult"]})
 
-    return jsonify(results = result)
+    return jsonify(array=result)
 
 
 @app.route('/createKafkaTopic', methods = ['GET', 'POST'])
