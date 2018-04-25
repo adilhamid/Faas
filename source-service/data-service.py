@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, request, render_template
 from kafka import KafkaProducer
 import pymongo
 import json
@@ -27,6 +27,8 @@ def success():
 
 @app.route('/', methods=['POST', 'GET'])
 def get_data():
+    collection = connect_mongo()
+    topics = collection.distinct('topicName')
     if request.method == 'POST':
         task = request.form["task"]
         topic = request.form["topic"]
@@ -36,10 +38,8 @@ def get_data():
         }
         message = json.dumps(data)
         producer.send(topic, message.encode('utf-8'))
-        return redirect(url_for('success'))
-    collection = connect_mongo()
-    topics = collection.distinct('topicName')
-    return render_template("index.html", topics=topics)
+        return render_template("index.html", topics=topics, success="true")
+    return render_template("index.html", topics=topics, success="")
 
 
 if __name__ == '__main__':
