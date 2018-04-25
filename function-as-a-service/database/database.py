@@ -5,7 +5,7 @@ from util.mongo_connect import connectMongo
 
 class Database:
 	def __init__(self):
-		self.collection = connectMongo()
+		self.collection, self.kafkaCollection = connectMongo()
 
 	def insertFunctionEntry(self, functionName, topicName, f):
 		f.save("/tmp/" + functionName + '.py')
@@ -24,7 +24,7 @@ class Database:
 		return result
 
 	def getAllKafkaTopics(self):
-		result = self.collection.distinct("topicName")
+		result = self.kafkaCollection.distinct("kafkaTopic")
 		return result
 
 	def getAllFunctionNames(self):
@@ -34,3 +34,6 @@ class Database:
 	def getFunctionPath(self, functionName):
 		result = self.collection.find({'functionName':functionName})
 		return result['path']
+
+	def addKafkaTopic(self, kafkaTopicName):
+		self.kafkaCollection.insert({'kafkaTopic': kafkaTopicName})

@@ -1,5 +1,5 @@
 
-function httpGet(theUrl)
+function httpGet(theUrl, id)
 {
      var request = $.ajax({
         type: "GET",
@@ -14,13 +14,13 @@ function httpGet(theUrl)
 
     request.done(function(JSON_array) {
         array_data = JSON.parse(JSON_array)["array"]
-        changeDropdownVals(array_data)
+        changeDropdownVals(array_data, id)
     });
 }
 
-function changeDropdownVals(options){
+function changeDropdownVals(options, id){
 
-    var sel = document.getElementById('functionName');
+    var sel = document.getElementById(id);
     for(var i = 0; i < options.length; i++) {
         var opt = document.createElement('option');
         opt.innerHTML = options[i];
@@ -32,7 +32,13 @@ function changeDropdownVals(options){
 function onFunctionNameLoad()
 {
     var url = "http://127.0.0.1:3034/getFunctionName"
-    options = httpGet(url)
+    options = httpGet(url, 'functionName')
+}
+
+function onTopicsLoad()
+{
+    var url = "http://127.0.0.1:3034/getTopicNames"
+    options = httpGet(url, 'kafkaTopic')
 }
 
 function checkFile()

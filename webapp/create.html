@@ -25,9 +25,9 @@
       <noscript>
          <link rel="stylesheet" href="css/style.css" />
       </noscript>
-       <script src="js/editFile.js"></script>
+       <script src="js/api-call.js"></script>
    </head>
-   <body class="homepage">
+   <body class="homepage" onload="onTopicsLoad();">
       <!-- Header -->
       <!-- Featured -->
       <div id="featured">
@@ -45,9 +45,10 @@
                 <small id="functionHelp" class="form-text text-muted">Please give the unique function name which does not exist</small>
               </div>
               <div class="form-group">
-                <label for="kafkaTopic">Kafka Topic Name</label>
-                <input type="text" class="form-control" name="kafkaTopic" id="kafkaTopic" aria-describedby="kafkaTopicHelp" placeholder="Enter Kakfka Topic name">
-                <small id="kafkaTopicHelp" class="form-text text-muted">Right Now, we only support Kafka as the source for the function.</small>
+                <label for="kafkaTopic">Select the Kafka Topic</label>
+                  <select name="kafkaTopic" id="kafkaTopic" placeholder="Select the Kafka Topic">
+                  </select>
+                 <button class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Create new Kafka topic</button>
               </div>
               <div class="form-group">
                 <label for="inputFunctionFile">File input</label>
@@ -56,6 +57,26 @@
               </div>
               <input type="submit" class="btn btn-primary"/>
             </form>
+             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Create a new Kafka Topic</h4>
+                  </div>
+                  <div class="modal-body">
+                    <form action='http://localhost:3034/createKafkaTopic' method="POST">
+                      <div class="form-group">
+                        <label >Enter the Kafka Topic Name</label>
+                        <input name='kafkaTopicName' type="text" class="form-control" id="kafkaTopicName" aria-describedby="kafkaHelp" placeholder="Enter Kafka Topic Name">
+                        <small id="kafkaHelp" class="form-text text-muted">Make sure to enter the new Kafka Topic Name which is not in dropdown</small>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
             <br/>
             <center>
             <hr/>
@@ -68,8 +89,4 @@
          </div>
       </div>
    </body>
-   <script type="text/javascript">
-      var el = document.getElementById('dropbox');
-      el.onclick = redirectToDropbox;
-   </script>
 </html>

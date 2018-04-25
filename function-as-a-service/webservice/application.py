@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import cross_origin, CORS
 import os
 import sys
+import subprocess
 sys.path.append("..")
 
 from database.database import Database
@@ -46,7 +47,30 @@ def getFunctionNames():
 
     return jsonify(array=functionNames)
 
+@app.route('/getTopicNames', methods = ['GET'])
+@cross_origin(supports_credentials=True)
+def getTopicNames():
+    if request.method == 'GET':
+        topicNames = database.getAllKafkaTopics()
 
+    return jsonify(array=topicNames)
+
+@app.route('/createKafkaTopic', methods = ['GET', 'POST'])
+@cross_origin(supports_credentials=True)
+def createKafkaTopic():
+    if request.method == 'POST':
+        topicName = request.form['kafkaTopicName']
+
+    try:
+        subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
+    except:
+        e = sys.exc_info()[0]
+        print "Exception occured ", e
+        return "Kafka topic creation failed"
+
+    database.addKafkaTopic(topicName)
+
+    return 'Kafka Topic created successfully'
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3034))
