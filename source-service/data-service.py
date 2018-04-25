@@ -38,8 +38,8 @@ def get_data():
         }
         message = json.dumps(data)
         producer.send(topic, message.encode('utf-8'))
-        return render_template("index.html", topics=topics)
-    return render_template("index.html", topics=topics)
+        return render_template("index.html", topics=topics, success="true")
+    return render_template("index.html", topics=topics, success="")
 
 
 if __name__ == '__main__':

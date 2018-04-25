@@ -4,7 +4,7 @@
     Data Service
 </title>
 <div class="container">
-  <form id="contact" onsubmit="print_success()" action="" method="post">
+  <form id="contact" action="" method="post">
     <h3>Enter the Data</h3>
       <fieldset>
           Choose Topic
@@ -21,5 +21,14 @@
     <fieldset>
       <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
     </fieldset>
+      {% if success == "true" %}
+          <div class="alert alert-success" role="alert">
+              SUCCESS!!
+          </div>
+      {% elif success == "false" %}
+          <div class="alert alert-danger" role="alert">
+              Error Occurred!!
+          </div>
+      {%endif%}
   </form>
 </div>
