@@ -22,10 +22,10 @@ class ResourceManager:
 
         # Since we have one instance only, running the command on the single instance
         functionPath = path + functionName + ".py"
-        instancePath  = "/home/ec2-user/functionDir/"  #Cross check this once again
+        instancePath  = "/home/ec2-user/functionDir/"
 
         # Check if the file path exists in the instance machine
-        self.exists_remote_create(self.configObj.INSTANCE, instancePath )
+        self.create_directory(self.configObj.INSTANCE, instancePath )
 
         copyCommand = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + functionPath + " " + self.configObj.INSTANCE + ":" + instancePath
 
