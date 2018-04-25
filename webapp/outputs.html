@@ -24,19 +24,21 @@
       <noscript>
          <link rel="stylesheet" href="css/style.css" />
       </noscript>
+      <script src="js/api-call.js"></script>
    </head>
-   <body class="homepage">
+   <body class="homepage" onload="viewOutputs();">
       <!-- Header -->
       <!-- Featured -->
       <div id="featured">
          <div class="container">
             <header>
-               <a href="index.php">
+               <a href="index.html">
                   <h2>Function as a Service</h2>
                </a>
                <h3>Run code without thinking about servers</h3>
             </header>
-            Output Logs
+            <div id="outputlogs">
+            </div>
             <br/>
             <center>
             <hr/>
@@ -49,8 +51,4 @@
          </div>
       </div>
    </body>
-   <script type="text/javascript">
-      var el = document.getElementById('dropbox');
-      el.onclick = redirectToDropbox;
-   </script>
 </html>
