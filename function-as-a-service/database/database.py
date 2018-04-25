@@ -5,7 +5,7 @@ from util.mongo_connect import connectMongo
 
 class Database:
 	def __init__(self):
-		self.collection, self.kafkaCollection = connectMongo()
+		self.collection, self.kafkaCollection, self.outputCollection = connectMongo()
 
 	def insertFunctionEntry(self, functionName, topicName, f):
 		f.save("/tmp/" + functionName + '.py')
@@ -37,3 +37,7 @@ class Database:
 
 	def addKafkaTopic(self, kafkaTopicName):
 		self.kafkaCollection.insert({'kafkaTopic': kafkaTopicName})
+
+	def getAllFunctionOutputs(self):
+		result = self.outputCollection.find()
+		return result
