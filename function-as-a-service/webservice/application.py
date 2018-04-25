@@ -47,6 +47,14 @@ def getFunctionNames():
 
     return jsonify(array=functionNames)
 
+@app.route('/getTopicNames', methods = ['GET'])
+@cross_origin(supports_credentials=True)
+def getTopicNames():
+    if request.method == 'GET':
+        topicNames = database.getAllKafkaTopics()
+
+    return jsonify(array=topicNames)
+
 @app.route('/createKafkaTopic', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def createKafkaTopic():
@@ -54,6 +62,8 @@ def createKafkaTopic():
         topicName = request.form['kafkaTopicName']
 
     subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
+
+    database.addKafkaTopic(topicName)
 
     return 'Kafka Topic created successfully'
 
