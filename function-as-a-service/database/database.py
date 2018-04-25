@@ -44,5 +44,5 @@ class Database:
 
 	def insertFunctionOutput(self, functionName, userData, output, timestamp):
 		self.outputCollection.insert({'timestamp' : timestamp,'functionName': functionName, 'userData': userData,
-							   	'outputResult': "output"})
+							   	'outputResult': output})
 
