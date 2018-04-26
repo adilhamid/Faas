@@ -38,10 +38,9 @@ class Listener():
         self.listenerObj.close()
 
 def listenerListe(listener):
-    print "Test"
     listener.stopFlag = True
     topics = listener.database.getAllKafkaTopics()
-    print topics
+    print 'Topics Listening to ', topics
     listener.startListening(topics)
     listener.stopFlag = False
 
