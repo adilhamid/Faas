@@ -37,10 +37,12 @@ def create_function():
 
         if functionName in functionNamesList:
             return redirect(WEBAPP_HOSTNAME + '/create.html?status=5')
+    try:
+        database.insertFunctionEntry(functionName, topicName, file)
+        return redirect(WEBAPP_HOSTNAME + '/create.html?status=3')
+    except:
+        return redirect(WEBAPP_HOSTNAME + '/create.html?status=6')
 
-    database.insertFunctionEntry(functionName, topicName, file)
-
-    return redirect(WEBAPP_HOSTNAME + '/create.html?status=3')
 
 @app.route('/update', methods = ['GET', 'POST'])
 def update_function():
@@ -53,9 +55,14 @@ def update_function():
         if fileName.split(".")[-1] != "py":
             return redirect(WEBAPP_HOSTNAME + '/edit.html?status=1')
 
-    database.updateEntry(functionName, file)
+    try:
+        database.updateEntry(functionName, file)
+        return redirect(WEBAPP_HOSTNAME + '/edit.html?status=0')
+    except:
+        return redirect(WEBAPP_HOSTNAME + '/edit.html?status=2')
 
-    return redirect(WEBAPP_HOSTNAME + '/edit.html?status=0')
+
+
 
 
 @app.route('/getFunctionName', methods = ['GET'])

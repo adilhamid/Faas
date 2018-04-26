@@ -1,4 +1,6 @@
 import sys
+import os
+import subprocess
 sys.path.append("..")
 
 from util.mongo_connect import connectMongo
@@ -7,17 +9,62 @@ class Database:
 	def __init__(self):
 		self.collection, self.kafkaCollection, self.outputCollection = connectMongo()
 
-	def insertFunctionEntry(self, functionName, topicName, f):
-		f.save("/tmp/" + functionName + '.py')
 
-		self.collection.update({'functionName': functionName, 'topicName': topicName},
+	def checkPythonFile(self, filePath):
+
+		# Check the file is compilable
+		command = "pyflakes " + filePath + " > output.log 2>&1"
+
+		try:
+			subprocess.check_output(command, shell=True)
+		except subprocess.CalledProcessError as e:
+			print e
+			raise Exception(e.message)
+
+		command = "rm output.log"
+		try:
+			fileSize = os.stat("output.log").st_size
+			subprocess.check_output(command, shell=True)
+
+			if fileSize >0:
+				return True
+			else:
+				return False
+
+		except:
+			print "Problem while checking the output.log file"
+			raise Exception("Problem Opening or removing the output.log")
+
+
+
+	def insertFunctionEntry(self, functionName, topicName, f):
+		filePath = "/tmp/" + functionName + '.py'
+		f.save(filePath)
+
+		if self.checkPythonFile(filePath):
+
+			self.collection.update({'functionName': functionName, 'topicName': topicName},
                           {'$set':{'path': "/tmp/"}}, True)
+		else:
+			command  = "rm "+filePath
+			try:
+				subprocess.check_output(command, shell=True)
+			except:
+				print "Problem deleting the saved file"
 
 	def updateEntry(self, functionName, f):
-		f.save("/tmp/"+functionName+'.py')
+		filePath = "/tmp/" + functionName + '.py'
+		f.save(filePath)
 
-		self.collection.update({'functionName': functionName},
-                          {'$set':{'path': "/tmp/"}}, True)
+		if self.checkPythonFile(filePath):
+			self.collection.update({'functionName': functionName},
+								   {'$set': {'path': "/tmp/"}}, True)
+		else:
+			command = "rm " + filePath
+			try:
+				subprocess.check_output(command, shell=True)
+			except:
+				print "Problem deleting the saved file"
 
 	def getDetailsByTopicName(self, topic):
 		result = self.collection.find({'topicName': topic})
