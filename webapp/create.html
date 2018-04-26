@@ -31,6 +31,9 @@
               $("div.create_kafka_success").toggle(document.URL.indexOf("status=1") !== -1);
               $("div.create_kafka_error1").toggle(document.URL.indexOf("status=0") !== -1);
               $("div.create_kafka_error2").toggle(document.URL.indexOf("status=2") !== -1);
+              $("div.create_function_success").toggle(document.URL.indexOf("status=3") !== -1);
+              $("div.invalid_file_error").toggle(document.URL.indexOf("status=4") !== -1);
+              $("div.duplicate_function_error").toggle(document.URL.indexOf("status=5") !== -1);
             });
        </script>
    </head>
@@ -64,6 +67,27 @@
                 <span aria-hidden="true">&times;</span>
               </button>
               <center><strong>Error!</strong> Kafka Topic Name already exists</center>
+            </div>
+
+             <div class="alert alert-success alert-dismissible center-block create_function_success">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Success!</strong> Function Uploaded Successfully</center>
+            </div>
+
+             <div class="alert alert-success alert-dismissible center-block invalid_file_error">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Invalid File!!</strong> Please upload a Python file</center>
+            </div>
+
+             <div class="alert alert-success alert-dismissible center-block duplicate_function_error">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Function Name already exists</strong> Please create a new Function name</center>
             </div>
 
             <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
