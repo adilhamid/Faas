@@ -27,9 +27,9 @@ class Database:
 			subprocess.check_output(command, shell=True)
 
 			if fileSize >0:
-				return True
-			else:
 				return False
+			else:
+				return True
 
 		except:
 			print "Problem while checking the output.log file"
