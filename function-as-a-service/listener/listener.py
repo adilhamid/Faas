@@ -5,6 +5,7 @@ sys.path.append("..")
 from util.config import Config
 from trigger.trigger import Trigger
 from database.database import Database
+import polling
 
 class Listener():
     def __init__(self):
@@ -36,7 +37,13 @@ class Listener():
 
         self.listenerObj.close()
 
+def listenerListe(listener):
+    listener.stopFlag = True
+    topics = listener.database.getAllKafkaTopics()
+    print 'Topics Listening to ', topics
+    listener.startListening(topics)
+    listener.stopFlag = False
+
 if __name__ == "__main__":
     listener = Listener()
-    topics = listener.database.getAllKafkaTopics()
-    listener.startListening(topics)
+    polling.poll(lambda :listenerListe(listener), step=60, poll_forever = True)
