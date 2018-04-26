@@ -26,6 +26,12 @@
       </noscript>
        <!-- User defined functionality -->
        <script src="js/api-call.js"></script>
+       <script>
+           $(document).ready(function () {
+              $("div.update_function_success").toggle(document.URL.indexOf("status=0") !== -1);
+              $("div.file_extension_error").toggle(document.URL.indexOf("status=1") !== -1);
+            });
+       </script>
    </head>
    <body class="homepage" onload="onFunctionNameLoad()">
       <!-- Header -->
@@ -38,6 +44,21 @@
                </a>
                <h3>Edit code without thinking about the editor</h3>
             </header>
+
+             <div class="alert alert-success alert-dismissible center-block update_function_success">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Success!!</strong> Function Update Successfully</center>
+            </div>
+
+             <div class="alert alert-success alert-dismissible center-block file_extension_error">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Invalid File!!</strong> Please upload a Python file</center>
+            </div>
+
             <form id = "updateForm" method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/update">
               <div class="form-group">
                   <label for="FunctionName">Select the Function Name, you want to update:</label> <br/>

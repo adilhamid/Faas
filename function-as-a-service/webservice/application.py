@@ -26,26 +26,36 @@ def create_function():
         file = request.files['file']
         functionName = request.form['functionName']
         topicName = request.form['kafkaTopic']
+        fileName = file.filename
+
+        # Checking if the file is a python file
+        if fileName.split(".")[-1] != "py":
+            return redirect(WEBAPP_HOSTNAME + '/create.html?status=4')
 
         # Checking if the function-name already exists
         functionNamesList = database.getAllFunctionNames()
 
         if functionName in functionNamesList:
-            return "Function name already exists!!!"
+            return redirect(WEBAPP_HOSTNAME + '/create.html?status=5')
 
     database.insertFunctionEntry(functionName, topicName, file)
 
-    return "File Uploaded Successful"
+    return redirect(WEBAPP_HOSTNAME + '/create.html?status=3')
 
 @app.route('/update', methods = ['GET', 'POST'])
 def update_function():
     if request.method == 'POST':
         file = request.files['file']
         functionName = request.form['functionName']
+        fileName = file.filename
+
+        # Checking if the file is a python file
+        if fileName.split(".")[-1] != "py":
+            return redirect(WEBAPP_HOSTNAME + '/edit.html?status=1')
 
     database.updateEntry(functionName, file)
 
-    return "File Re-Uploaded Successfully"
+    return redirect(WEBAPP_HOSTNAME + '/edit.html?status=0')
 
 
 @app.route('/getFunctionName', methods = ['GET'])
