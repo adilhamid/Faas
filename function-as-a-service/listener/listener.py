@@ -23,10 +23,11 @@ class Listener():
 
 
     # Run the service to listen to the kafka queue on particular topic
-    def startListening(self, topics):
-        self.listenerObj.subscribe(topics)
+    def startListening(self):
 
         while not self.stopFlag:
+            topics = listener.database.getAllKafkaTopics()
+            self.listenerObj.subscribe(topics)
             for message in self.listenerObj:
                 print(message)
                 # As soon as the request is listened from the Kafka Queue, Invoke the trigger
@@ -37,13 +38,15 @@ class Listener():
 
         self.listenerObj.close()
 
-def listenerListe(listener):
-    listener.stopFlag = True
-    topics = listener.database.getAllKafkaTopics()
-    print 'Topics Listening to ', topics
-    listener.startListening(topics)
-    listener.stopFlag = False
+# def listenerListe(listener):
+#     listener.stopFlag = True
+#     topics = listener.database.getAllKafkaTopics()
+#     print 'Topics Listening to ', topics
+#     listener.stopFlag = False
+#     listener.startListening(topics)
+
 
 if __name__ == "__main__":
     listener = Listener()
-    polling.poll(lambda :listenerListe(listener), step=60, poll_forever = True)
+    listener.startListening()
+    # polling.poll(lambda :listenerListe(listener), step=60, poll_forever = True)
