@@ -1,7 +1,7 @@
 import pymongo
 
 def connectMongo():
-	host = "127.0.0.1:27017"
+	host = "mongo:27017" # 127.0.0.1
 	db = "faas"
 	collection = "function_topic_mapping"
 	kafka_collection = "kafka_topics_available"

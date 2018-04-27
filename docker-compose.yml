@@ -1,0 +1,126 @@
+version: '2.1'
+
+services:
+  app:
+    restart: always
+    build: ./function-as-a-service
+    ports:
+      - "3034:3034"
+    volumes:
+      - datavolume:/tmp
+    command: /usr/local/bin/gunicorn -w 2 -b :3034 wsgi
+    links:
+      - mongo
+      - kafkaserver
+    depends_on:
+      kafkaserver:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+
+  sourceapp:
+    restart: always
+    build: ./source-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - /home/flask/source-service/web
+    command: /usr/local/bin/gunicorn -w 2 -b :5000 wsgi
+    links:
+      - mongo
+      - kafkaserver
+    depends_on:
+      mongo:
+        condition: service_healthy
+      kafkaserver:
+        condition: service_healthy
+
+  listener:
+    build: ./function-as-a-service
+    ports:
+      - "3035:3035"
+    volumes:
+      - datavolume:/tmp
+    command: bash -c "cd listener/ && python -u listener.py"
+    links:
+      - mongo
+      - kafkaserver
+    depends_on:
+      mongo:
+        condition: service_healthy
+      kafkaserver:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:3.6.0
+    ports:
+        - "27017:27017"
+    environment:
+      MONGODB_DATABASE: "faas"
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  apache2:
+    build: ./webapp
+    volumes:
+        - /usr/local/apache2/htdocs/
+    ports:
+        - 80:80
+        - 443:443
+
+  kafkaserver:
+    image: wurstmeister/kafka:0.10.1.0-2
+    hostname: kafkaserver
+    ports:
+      - "9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafkaserver"
+      KAFKA_ADVERTISED_PORT: "9092"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_CREATE_TOPICS: "Topic1:1:1:compact"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "unset" , "JMX_PORT" ,";" ,"kafka-topics.sh","--zookeeper","zookeeper:2181","--list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+volumes:
+  datavolume: {}
+#  zoo1:
+#    image: zookeeper:3.4.9
+#    hostname: zoo1
+#    ports:
+#      - "2181:2181"
+#    environment:
+#        ZOO_MY_ID: 1
+#        ZOO_PORT: 2181
+#        ZOO_SERVERS: server.1=zoo1:2888:3888
+#    volumes:
+#      - ./zk-single-kafka-single/zoo1/data:/data
+#      - ./zk-single-kafka-single/zoo1/datalog:/datalog
+#
+#  kafkaserver:
+#    image: confluentinc/cp-kafka:4.1.0
+#    hostname: kafka1
+#    ports:
+#      - "9092:9092"
+#    environment:
+#      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafkaserver:9092"
+#      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+#      KAFKA_BROKER_ID: 1
+#    volumes:
+#      - ./zk-single-kafka-single/kafkaserver/data:/var/lib/kafka/data
+#    depends_on:
+#      - zoo1

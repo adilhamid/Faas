@@ -5,7 +5,6 @@ sys.path.append("..")
 from util.config import Config
 from trigger.trigger import Trigger
 from database.database import Database
-import polling
 
 class Listener():
     def __init__(self):
@@ -14,7 +13,7 @@ class Listener():
         self.configObj = Config()
         self.triggerObj = Trigger()
         self.listenerObj = KafkaConsumer(bootstrap_servers=self.configObj.KAFKA_QUEUE_HOSTNAME_PORT,
-                                 auto_offset_reset='earliest',
+                                 auto_offset_reset='latest',
                                  consumer_timeout_ms=1000)
 
     # Emergency Stop the listener
@@ -23,13 +22,16 @@ class Listener():
 
 
     # Run the service to listen to the kafka queue on particular topic
-    def startListening(self):
+    def startListening(self, ):
 
         while not self.stopFlag:
             topics = listener.database.getAllKafkaTopics()
+            topics.append('Topic1')
             self.listenerObj.subscribe(topics)
+            print 'Topics', self.listenerObj.topics()
+            print 'Subscriptions', self.listenerObj.subscription()
             for message in self.listenerObj:
-                print(message)
+                print 'Message', message
                 # As soon as the request is listened from the Kafka Queue, Invoke the trigger
                 self.triggerObj.handleRequest(message)
 
@@ -38,15 +40,6 @@ class Listener():
 
         self.listenerObj.close()
 
-# def listenerListe(listener):
-#     listener.stopFlag = True
-#     topics = listener.database.getAllKafkaTopics()
-#     print 'Topics Listening to ', topics
-#     listener.stopFlag = False
-#     listener.startListening(topics)
-
-
 if __name__ == "__main__":
     listener = Listener()
     listener.startListening()
-    # polling.poll(lambda :listenerListe(listener), step=60, poll_forever = True)
