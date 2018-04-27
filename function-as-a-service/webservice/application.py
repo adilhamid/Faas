@@ -4,23 +4,31 @@ import os
 import sys
 import json
 import subprocess
+from kafka.client import KafkaClient
+from kafka import KafkaProducer
 sys.path.append("..")
+import time
 
+from util.config import Config
 from database.database import Database
 
-app = Flask(__name__)
-CORS(app, support_credentials=True)
+application = Flask(__name__)
+CORS(application, support_credentials=True)
 
 database = Database()
 
-WEBAPP_HOSTNAME = "http://localhost:63342/689-18-a-P2/webapp/"
+WEBAPP_HOSTNAME = "http://localhost:" ## http://localhost:63342/689-18-a-P2/webapp/
 
-@app.route('/test')
+config = Config()
+client = KafkaClient(bootstrap_servers=config.KAFKA_QUEUE_HOSTNAME_PORT)
+producer = KafkaProducer(bootstrap_servers='kafkaserver:9092')
+
+@application.route('/test')
 def test():
     return "This is a test api"
 
 
-@app.route('/create', methods = ['GET', 'POST'])
+@application.route('/create', methods = ['GET', 'POST'])
 def create_function():
     if request.method == 'POST':
         file = request.files['file']
@@ -44,7 +52,7 @@ def create_function():
         return redirect(WEBAPP_HOSTNAME + '/create.html?status=6')
 
 
-@app.route('/update', methods = ['GET', 'POST'])
+@application.route('/update', methods = ['GET', 'POST'])
 def update_function():
     if request.method == 'POST':
         file = request.files['file']
@@ -65,7 +73,7 @@ def update_function():
 
 
 
-@app.route('/getFunctionName', methods = ['GET'])
+@application.route('/getFunctionName', methods = ['GET'])
 @cross_origin(supports_credentials=True)
 def getFunctionNames():
     if request.method == 'GET':
@@ -73,7 +81,7 @@ def getFunctionNames():
 
     return jsonify(array=functionNames)
 
-@app.route('/getTopicNames', methods = ['GET'])
+@application.route('/getTopicNames', methods = ['GET'])
 @cross_origin(supports_credentials=True)
 def getTopicNames():
     if request.method == 'GET':
@@ -82,7 +90,7 @@ def getTopicNames():
     return jsonify(array=topicNames)
 
 
-@app.route('/getFunctionOutput', methods = ['GET', 'POST'])
+@application.route('/getFunctionOutput', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def getFunctionOutputs():
     result =[]
@@ -96,7 +104,7 @@ def getFunctionOutputs():
     return jsonify(array=result)
 
 
-@app.route('/createKafkaTopic', methods = ['GET', 'POST'])
+@application.route('/createKafkaTopic', methods = ['GET', 'POST'])
 @cross_origin(supports_credentials=True)
 def createKafkaTopic():
     topicName = request.form['kafkaTopicName']
@@ -108,16 +116,17 @@ def createKafkaTopic():
 
     # If Kafka topic doesn't exist
     try:
-        subprocess.check_output('kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ' + topicName, shell=True)
+        client.add_topic(topicName)
     except:
         e = sys.exc_info()[0]
         print "Exception occured ", e
         redirect(WEBAPP_HOSTNAME + '/create.html?status=0')
 
     database.addKafkaTopic(topicName)
+    producer.send(topicName, "test".encode('utf-8'))
 
     return redirect(WEBAPP_HOSTNAME + '/create.html?status=1')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 3034))
-    app.run(debug=True, port=port)
+    application.run(debug=True, port=port)

@@ -2,15 +2,15 @@ from flask import Flask, request, render_template
 from kafka import KafkaProducer
 import pymongo
 import json
+import os
 
+application = Flask(__name__)
 
-app = Flask(__name__)
-
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
+producer = KafkaProducer(bootstrap_servers='kafkaserver:9092')
 
 
 def connect_mongo():
-    host = "127.0.0.1:27017"
+    host = "mongo:27017"
     db = "faas"
     collection = "function_topic_mapping"
     kafka_collection = "kafka_topics_available"
@@ -23,12 +23,12 @@ def connect_mongo():
     return collection, kafka_collection
 
 
-@app.route('/success')
+@application.route('/success')
 def success():
    return "Success"
 
 
-@app.route('/', methods=['POST', 'GET'])
+@application.route('/', methods=['POST', 'GET'])
 def get_data():
     collection, kafka_collection = connect_mongo()
     topics = kafka_collection.distinct('kafkaTopic')
@@ -46,5 +46,6 @@ def get_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 3034))
+    application.run(debug=True, port=port)
     producer.close()

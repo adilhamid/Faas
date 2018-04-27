@@ -11,7 +11,7 @@ class ResourceManager:
         self.database = Database()
 
     def create_directory(self, host, path):
-        creatDir = "ssh " + host +" 'mkdir -p " + path+"'"
+        creatDir = "ssh -i faas.pem " + host +" 'mkdir -p " + path+"'"
         try:
             print creatDir
             copy = subprocess.check_output(creatDir, shell=True)
@@ -30,13 +30,13 @@ class ResourceManager:
         # Check if the file path exists in the instance machine
         self.create_directory(self.configObj.INSTANCE, instancePath )
 
-        copyCommand = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + functionPath + " " + self.configObj.INSTANCE + ":" + instancePath
+        copyCommand = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + functionPath + " " + self.configObj.INSTANCE + ":" + instancePath
 
-        permissionCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + " 'chmod 711 " + instancePath+functionName + ".py'"
+        permissionCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + " 'chmod 711 " + instancePath+functionName + ".py'"
 
-        runCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + " 'DISPLAY=:0 python "+ instancePath + functionName + ".py > "+ instancePath + functionName + ".log'"
+        runCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + " 'DISPLAY=:0 python "+ instancePath + functionName + ".py > "+ instancePath + functionName + ".log'"
 
-        copyLogBack = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no " + self.configObj.INSTANCE + ":" + instancePath+ functionName + ".log " + path + functionName + ".log"
+        copyLogBack = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + ":" + instancePath+ functionName + ".log " + path + functionName + ".log"
 
         try:
             print copyCommand
