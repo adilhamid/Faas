@@ -34,6 +34,7 @@
               $("div.create_function_success").toggle(document.URL.indexOf("status=3") !== -1);
               $("div.invalid_file_error").toggle(document.URL.indexOf("status=4") !== -1);
               $("div.duplicate_function_error").toggle(document.URL.indexOf("status=5") !== -1);
+              $("div.file_compile_error").toggle(document.URL.indexOf("status=6") !== -1);
             });
        </script>
    </head>
@@ -88,6 +89,13 @@
                 <span aria-hidden="true">&times;</span>
               </button>
               <center><strong>Function Name already exists</strong> Please create a new Function name</center>
+            </div>
+
+              <div class="alert alert-success alert-dismissible center-block file_compile_error">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <center><strong>Python File is not compilable </strong> Please upload a compile python file</center>
             </div>
 
             <form method="post" enctype="multipart/form-data" action = "http://127.0.0.1:3034/create">
