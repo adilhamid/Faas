@@ -6,11 +6,11 @@ import os
 
 application = Flask(__name__)
 
-producer = KafkaProducer(bootstrap_servers='kafkaserver:9092')
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 
 def connect_mongo():
-    host = "mongo:27017"
+    host = "127.0.0.1:27017"
     db = "faas"
     collection = "function_topic_mapping"
     kafka_collection = "kafka_topics_available"
