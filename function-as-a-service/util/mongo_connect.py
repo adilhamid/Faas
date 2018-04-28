@@ -1,7 +1,9 @@
 import pymongo
+from config import Config
 
+conf = Config()
 def connectMongo():
-	host = "mongo:27017" # 127.0.0.1
+	host = conf.MONGO_HOSTNAME_PORT
 	db = "faas"
 	collection = "function_topic_mapping"
 	kafka_collection = "kafka_topics_available"
