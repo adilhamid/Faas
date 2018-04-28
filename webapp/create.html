@@ -113,10 +113,15 @@
               <div class="form-group">
                 <label for="inputFunctionFile">File input</label>
                 <input type="file" class="form-control-file" name="file" id="inputFunctionFile" aria-describedby="fileHelp" required>
-                <small id="fileHelp" class="form-text text-muted">Upload the Python Code File here. As of now, we only support Python.</small>
+                <small id="fileHelp" class="form-text text-muted">Upload the Python Code File here. As of now, we only support Python 2.7.</small>
+                <br/>
+                <small id="fileHelp1" class="form-text text-muted">Please follow this format while uploading Python file
+                <a href="template.py">File Format</a>
+                </small>
               </div>
               <input type="submit" class="btn btn-primary"/>
             </form>
+
              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">

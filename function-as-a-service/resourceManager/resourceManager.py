@@ -34,7 +34,7 @@ class ResourceManager:
 
         permissionCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + " 'chmod 711 " + instancePath+functionName + ".py'"
 
-        runCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + " 'DISPLAY=:0 python "+ instancePath + functionName + ".py > "+ instancePath + functionName + ".log'"
+        runCommand = "ssh -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + " 'DISPLAY=:0 python "+ instancePath + functionName + ".py '\\''" + userData + "'\\'' > "+ instancePath + functionName + ".log'"
 
         copyLogBack = "scp -o LogLevel=quiet -o StrictHostKeyChecking=no -i faas.pem " + self.configObj.INSTANCE + ":" + instancePath+ functionName + ".log " + path + functionName + ".log"
 
