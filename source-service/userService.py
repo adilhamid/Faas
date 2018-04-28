@@ -46,6 +46,5 @@ def get_data():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 3034))
-    application.run(debug=True, port=port)
+    application.run(debug=True)
     producer.close()
