@@ -2,12 +2,9 @@ from flask import Flask, request, jsonify, redirect
 from flask_cors import cross_origin, CORS
 import os
 import sys
-import json
-import subprocess
 from kafka.client import KafkaClient
 from kafka import KafkaProducer
 sys.path.append("..")
-import time
 
 from util.config import Config
 from database.database import Database

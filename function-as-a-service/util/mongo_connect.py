@@ -16,4 +16,3 @@ def connectMongo():
 	kafka_collection = db[kafka_collection]
 	output_collection = db[output_collection]
 	return collection, kafka_collection, output_collection
-
