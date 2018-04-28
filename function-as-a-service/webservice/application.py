@@ -17,11 +17,10 @@ CORS(application, support_credentials=True)
 
 database = Database()
 
-WEBAPP_HOSTNAME = "http://localhost:" ## http://localhost:63342/689-18-a-P2/webapp/
-
 config = Config()
+WEBAPP_HOSTNAME = config.ADMIN_WEBAPP_HOSTNAME
 client = KafkaClient(bootstrap_servers=config.KAFKA_QUEUE_HOSTNAME_PORT)
-producer = KafkaProducer(bootstrap_servers='kafkaserver:9092')
+producer = KafkaProducer(bootstrap_servers=config.KAFKA_QUEUE_HOSTNAME_PORT)
 
 @application.route('/test')
 def test():
